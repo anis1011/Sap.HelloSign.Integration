@@ -65,10 +65,8 @@ namespace SPC_B1HelloSignAddOn.Forms
         private string stFilePathAndName = "";
         private SAPbouiCOM.Form oForm;
         private SAPbouiCOM.LinkedButton LinkedButton0;
-        private double sum = 0;
         List<string> before = new List<string>();
         List<string> after = new List<string>();
-        private int attachmentRow;
         private Recordset Rec;
 
         /// <summary>
@@ -148,7 +146,9 @@ namespace SPC_B1HelloSignAddOn.Forms
             //oForm.EnableMenu("1292", true);
             //oForm.EnableMenu("1293", true);
             //UIAPIRawForm.EnableMenu("773", false);
-            UIAPIRawForm.EnableMenu("5377", false);
+            //UIAPIRawForm.EnableMenu("5377", false);
+            UIAPIRawForm.EnableMenu("774", false);
+
 
             BasicBinding();
 
@@ -169,10 +169,14 @@ namespace SPC_B1HelloSignAddOn.Forms
             Matrix0.AddLine();
             Extentions.SetLineId(Matrix0);
             Matrix0.AutoResizeColumns();
+
             Matrix1.AddLine();
             Extentions.SetLineId(Matrix1);
             Matrix1.AutoResizeColumns();
-            attachmentRow = 1;
+
+            Matrix4.AddLine();
+            Extentions.SetLineId(Matrix4);
+            Matrix4.AutoResizeColumns();
 
             Matrix3.AddLine();
             Extentions.SetLineId(Matrix3);
@@ -307,6 +311,9 @@ namespace SPC_B1HelloSignAddOn.Forms
                         }
                         else if (pVal.MenuUID == "1281")
                         {
+                            txtNo.Item.Enabled = true;
+                            ComboBox2.Item.Enabled = true;
+                            txtName.Item.Enabled = true;
                         }
 
                         if (pVal.MenuUID == "1284")
@@ -326,6 +333,7 @@ namespace SPC_B1HelloSignAddOn.Forms
 
                         if (pVal.MenuUID == "1293")
                         {
+                            after = new List<string>();
                             for (int i = 1; i <= Matrix0.VisualRowCount; i++)
                             {
                                 var docentry = ((SAPbouiCOM.EditText)Matrix0.Columns.Item("Selected").Cells.Item(i).Specific).Value;
@@ -334,6 +342,9 @@ namespace SPC_B1HelloSignAddOn.Forms
                             Extentions.SetLineId(Matrix0);
                             List<string> deleted = before.Except(after).ToList();
                             RemoveAttachment(deleted.First());
+                            Matrix0.DeleteRow(Matrix0.RowCount-1);
+                            Matrix0.AddLine();
+                            Extentions.SetLineId(Matrix0);
 
                         }
                     }
@@ -347,6 +358,7 @@ namespace SPC_B1HelloSignAddOn.Forms
                         }
                         if (pVal.MenuUID == "1293")
                         {
+                            before = new List<string>();
                             for (int i = 1; i <= Matrix0.VisualRowCount; i++)
                             {
                                 var docentry = ((SAPbouiCOM.EditText)Matrix0.Columns.Item("Selected").Cells.Item(i).Specific).Value;
@@ -544,7 +556,7 @@ namespace SPC_B1HelloSignAddOn.Forms
                             Matrix0.SetCellValue("Total", matrixRow, dueBalance);
                             Matrix0.SetCellValue("PayAmount", matrixRow, dueBalance);
 
-                            if (!string.IsNullOrEmpty(Matrix0.GetCellValue("Selected", Matrix0.VisualRowCount).ToString()))
+                            if (!string.IsNullOrEmpty(Matrix0.GetCellValue("Selected", Matrix0.RowCount).ToString()))
                             {
                                 Matrix0.AddLine();
                                 Extentions.SetLineId(Matrix0);
@@ -617,18 +629,20 @@ namespace SPC_B1HelloSignAddOn.Forms
 
         private void LoadAttachment(string docEntry)
         {
-            string query = $@"SELECT T0.""DocEntry"",T0.""DocNum"", T1.""trgtPath"", T1.""FileName"" FROM OPCH T0 INNER JOIN ATC1 T1 ON  T0.""AtcEntry"" = T1.""AbsEntry"" WHERE T0.""DocEntry"" = {docEntry}";
+            string query = $@"SELECT T0.""DocEntry"",T0.""DocNum"", T1.""trgtPath"", T1.""FreeText"", TO_VARCHAR(T1.""Date"",'yyyyMMdd') ""Date"" FROM OPCH T0 INNER JOIN ATC1 T1 ON  T0.""AtcEntry"" = T1.""AbsEntry"" WHERE T0.""DocEntry"" = {docEntry}";
             ResetRec();
             Rec.DoQuery(query);
             while (!Rec.EoF)
             {
-                Matrix1.SetCellValue("DocEntry", attachmentRow, Rec.Fields.Item("DocEntry").Value.ToString());
-                Matrix1.SetCellValue("DocNum", attachmentRow, Rec.Fields.Item("DocNum").Value.ToString());
-                Matrix1.SetCellValue("Name", attachmentRow, Rec.Fields.Item("FileName").Value.ToString());
-                Matrix1.SetCellValue("FilePath", attachmentRow, Rec.Fields.Item("trgtPath").Value.ToString());
+                int row = Matrix1.VisualRowCount;
+                Matrix1.SetCellValue("DocEntry", row, Rec.Fields.Item("DocEntry").Value.ToString());
+                Matrix1.SetCellValue("DocNum", row, Rec.Fields.Item("DocNum").Value.ToString());
+                Matrix1.SetCellValue("Name", row, Rec.Fields.Item("FreeText").Value.ToString());
+                var date = Rec.Fields.Item("Date").Value.ToString();
+                Matrix1.SetCellValue("Date", row, Rec.Fields.Item("Date").Value.ToString());
+                Matrix1.SetCellValue("FilePath", row, Rec.Fields.Item("trgtPath").Value.ToString());
                 Matrix1.AddLine();
                 Extentions.SetLineId(Matrix1);
-                attachmentRow += 1;
                 Rec.MoveNext();
             }
         }
@@ -679,7 +693,7 @@ namespace SPC_B1HelloSignAddOn.Forms
             BubbleEvent = true;
             if (eventInfo.ItemUID == "Item_0")
             {
-                
+
                 UIAPIRawForm.EnableMenu("1292", true);
                 UIAPIRawForm.EnableMenu("1293", true);
                 //oForm.EnableMenu("5377", false);

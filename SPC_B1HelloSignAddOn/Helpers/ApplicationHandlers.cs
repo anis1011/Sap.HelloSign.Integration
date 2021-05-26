@@ -78,7 +78,7 @@ namespace SPC_B1HelloSignAddOn.Helpers
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
         }
