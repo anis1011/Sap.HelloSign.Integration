@@ -47,8 +47,8 @@ namespace SPC_B1HelloSignAddOn.Helpers
                 B1Helper.AddField("NAME", "Name", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 50, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("BNKPYDT", "Bank Pay Date", "SPC_HS_OPMV", BoFieldTypes.db_Date, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true);
                 B1Helper.AddField("STATUS", "Status", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 30, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
-                B1Helper.AddField("PAYTO", "Pay To", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 20, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
-                B1Helper.AddField("ADDRESS", "Address", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 50, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
+                B1Helper.AddField("PAYTO", "Pay To", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 100, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
+                B1Helper.AddField("ADDRESS", "Address", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 150, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("INTEGRATION", "Is Ready For Integration", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 1, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("SAPUSER", "SAP User Name", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 30, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("HELOSIGNKEY", "HelloSign Key", "SPC_HS_OPMV", BoFieldTypes.db_Alpha, 100, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
@@ -76,7 +76,7 @@ namespace SPC_B1HelloSignAddOn.Helpers
                 B1Helper.AddField("DATE", "Attach Date", "SPC_HS_PMV2", BoFieldTypes.db_Date, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true);
                 B1Helper.AddField("FILEPATH", "File Path", "SPC_HS_PMV2", BoFieldTypes.db_Memo, 100, BoYesNoEnum.tNO, BoFldSubTypes.st_Link, true);
 
-                B1Helper.AddField("SELECT", "Select", "SPC_HS_PMV3", BoFieldTypes.db_Alpha, 1, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
+                B1Helper.AddField("USER", "User", "SPC_HS_PMV3", BoFieldTypes.db_Alpha, 1, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("EMAIL", "Email", "SPC_HS_PMV3", BoFieldTypes.db_Alpha, 30, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
                 B1Helper.AddField("ORDER", "Order of Approver", "SPC_HS_PMV3", BoFieldTypes.db_Alpha, 30, BoYesNoEnum.tNO, BoFldSubTypes.st_None, true, "");
 
